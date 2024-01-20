@@ -8,6 +8,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
+import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -161,7 +162,14 @@ function AddWebSite(){
             id='isActive'
             onChange={ onIsActiveChange} 
             value={isActive} 
-            control={<Switch color="primary"/>}
+            control={
+            // <Switch color="primary" />
+            <Checkbox
+            checked={isActive}
+            onChange={onIsActiveChange}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+          }
             label="Website is active"
             labelPlacement="start"
           />
@@ -172,10 +180,10 @@ function AddWebSite(){
           <Grid item xs={2} sm={4} md={4} key={7}></Grid>
           <Grid item xs={2} sm={4} md={4} key={8}>
           <Stack direction="row" spacing={2} style={ { display: 'contents'}} >
-          <Button variant="contained" color="success" onClick={ handleSubmit}>
+          <Button variant="contained" color="success" disabled = { !name.length && !url.length} onClick={ handleSubmit}>
             Save
           </Button>
-          <Button variant="contained" color="primary" onClick={handleReset}>
+          <Button variant="contained" color="primary" disabled = { !name.length && !url.length} onClick={handleReset}>
             Reset
           </Button>
           </Stack>

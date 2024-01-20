@@ -8,21 +8,46 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
 
 function WebSiteTable(){
 
     const [ rows, setRows] = useState([]);
 
-    useEffect(()=>{
-        const data = async() =>{
-            const result = await fetch('http://localhost:8091/webSite/getAllWebSite');
-            const json = await result.json();
+    const [count, setCount] = useState(0);
+ 
+    useEffect(() => {
+        //Implementing the setInterval method
+        const interval = setInterval(() => {
+            setCount(count + 1);
+            data();
+            console.log(count);
+        }, 1000 * 60);
+ 
+        //Clearing the interval
+        return () => clearInterval(interval);
+    }, [count]);
 
-            setRows(json);
-        }
+    // const [time, setTime] = useState(Date.now());
+
+    // useEffect(() => {
+    //   const interval = ( Date.now() - time ) / 1000 * 60 * 2;
+    //   console.log('Data'+interval);
+    //   if(interval>=1000 * 60 * 2){
+    //     console.log('Data1'+time);
+    //     setTime(Date.now);
+    //   }
+    // }, [Date.now()]);
+
+    useEffect(()=>{
         data()
     }, []);
+
+    const data = async() =>{
+      const result = await fetch('http://localhost:8091/webSite/checkStatus');
+      const json = await result.json();
+
+      setRows(json);
+    }
 
     return(
         <div>
@@ -64,7 +89,7 @@ function WebSiteTable(){
             >
               <TableCell align="center">{row.webSiteName}</TableCell>
               <TableCell align="center">{row.webSiteUrl}</TableCell>
-              <TableCell align="center">{ row.isActive === false ? 'Failed' : 'success' }</TableCell>
+              <TableCell align="center" >{ row.isActive === false ? <div style={{ color: 'red'}}>Failed</div> : <div style={{ color: 'green'}}>Success</div> }</TableCell>
             </TableRow>
           ))}
         </TableBody>
